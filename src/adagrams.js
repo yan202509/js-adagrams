@@ -28,28 +28,30 @@ export const LETTER_POOL = {
 };
 
 const NUMBER_IN_ONEHAND = 10;
+const COPIE_LETTER_POOL = {...LETTER_POOL};
 
 export const drawLetters = () => {
   // Implement this method for wave 1
 
   // Create letterList to store ALL the letters
   // Ex. AAAAAAAAABBCC...
-  const copiedLetterPool = {...LETTER_POOL};
+  // Create a copy of the letter pool object
   const lettersList = [];
-  for (const letter in copiedLetterPool) {
-    const count = copiedLetterPool[letter];
+  for (const letter in COPIE_LETTER_POOL) {
+    const count = COPIE_LETTER_POOL[letter];
     for (let i = 0; i < count; i++)
-    lettersList.push(letter);
+      lettersList.push(letter);
   }
 
-  // Draw 10 letters from an object
+  // Draw 10 random letters from an object
   // Pool size is the same for each drawing
   const lettersInHand = [];
   for (let i = 0; i < NUMBER_IN_ONEHAND; i++) {
-    const tenCount = lettersList.pop();
-    lettersInHand.push(tenCount);
+    const randomSelect = Math.floor(Math.random() * lettersList.length);
+    const tenCount = lettersList.splice(randomSelect, 1)[0];
+    lettersInHand.push(tenCount.toLocaleUpperCase());
   }
-    return lettersInHand;
+  return lettersInHand;
 };
 
 export const usesAvailableLetters = (input, lettersInHand) => {
