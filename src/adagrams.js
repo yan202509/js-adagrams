@@ -46,15 +46,6 @@ export const drawLetters = () => {
   }
 
 
-//   const lettersInHand = [];
-//   for (let i = 0; i < NUMBER_IN_ONEHAND; i++) {
-//     const randomSelect = Math.floor(Math.random() * lettersList.length);
-//     const tenCount = lettersList.splice(randomSelect, 1)[0];
-//     lettersInHand.push(tenCount.toLocaleUpperCase());
-//   }
-//   return lettersInHand;
-// };
-
   // Draw 10 random letters from an object
   // Pool size is the same for each drawing
   // big O, by place the letter to the end,
@@ -72,13 +63,38 @@ export const drawLetters = () => {
 
     // remove the last element of the array by .pop
     const tenCount = lettersList.pop();
-    lettersInHand.push(tenCount.toUpperCase());
+    lettersInHand.push(tenCount);
   }
   return lettersInHand;
 };
 
 export const usesAvailableLetters = (input, lettersInHand) => {
   // Implement this method for wave 2
+  input = input.toUpperCase();
+  const handCopy = [...lettersInHand];
+  for (const letter of input) {
+    let found = false;
+
+    for (let i = 0; i <handCopy.length; i++) {
+      if (handCopy[i] === letter) {
+        const lastIndexLetter = handCopy.length - 1;
+
+        // the letterExist is a letter that exist in both input and handCopy
+        // awaiting to be put at the end of the handCopy
+        const letterExist = handCopy[i];
+        handCopy[i] = handCopy[lastIndexLetter];
+        handCopy[lastIndexLetter] = letterExist;
+
+        handCopy.pop();
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      return false;
+    }
+  }
+  return true;
 };
 
 export const scoreWord = (word) => {
@@ -89,4 +105,3 @@ export const highestScoreFrom = (words) => {
   // Implement this method for wave 4
 };
 
-console.log('hello');
