@@ -59,6 +59,7 @@ export const SCORE_CHART = {
 };
 
 const NUMBER_IN_ONE_HAND = 10;
+const MIN_NUM_TO_GET_EIGHT_POINT = 7; 
 const COPIE_LETTER_POOL = {...LETTER_POOL};
 
 export const drawLetters = () => {
@@ -136,7 +137,7 @@ export const scoreWord = (word) => {
       total = total + SCORE_CHART[letter];
     }
   }
-  if (word.length >= 7 && word.length <= NUMBER_IN_ONE_HAND) {
+  if (word.length >= MIN_NUM_TO_GET_EIGHT_POINT && word.length <= NUMBER_IN_ONE_HAND) {
     total = total + 8;
   };
   return total;
@@ -144,5 +145,43 @@ export const scoreWord = (word) => {
 
 export const highestScoreFrom = (words) => {
   // Implement this method for wave 4
+  let highestScore = 0;
+  
+  // get the max score
+  for (let i = 0; i < words.length; i++) {
+    const score = scoreWord(words[i]);
+    if (score > highestScore) {
+      highestScore = score; 
+    }
+  }
+
+  const multipleHighestScoreWord = [];
+  for (let i = 0; i < words.length; i++) {
+    if (scoreWord(words[i]) === highestScore) {
+      multipleHighestScoreWord.push(words[i]);
+    }
+  }
+
+  if (multipleHighestScoreWord.length === 1) {
+    return {word: multipleHighestScoreWord[0], score: highestScore};
+  }
+
+  for (let i = 0; i < multipleHighestScoreWord.length; i++) {
+    if (multipleHighestScoreWord[i].length === NUMBER_IN_ONE_HAND) {
+      return {word: multipleHighestScoreWord[i], score: highestScore};
+    }
+  }
+
+  let shortestWord = multipleHighestScoreWord[0];
+  for (let i = 0; i < multipleHighestScoreWord.length; i++) {
+    if (multipleHighestScoreWord[i].length < shortestWord.length) {
+      shortestWord = multipleHighestScoreWord[i];
+    }
+  }
+
+  return {word: shortestWord, score: highestScore};
+
+
+
 };
 
